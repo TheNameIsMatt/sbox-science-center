@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,7 +55,7 @@ namespace ScienceCenter
 				CelestialObjectOfAttraction = GetClosestCelestialObject();
 
 				if ( CelestialObjectOfAttraction is not null )
-					Log.Info( "Planet nearby" );
+					Log.Info( CelestialObjectOfAttraction?.CelestialName);
 				else
 					Log.Info( "No Planet Nearby" );
 			}
@@ -62,15 +63,29 @@ namespace ScienceCenter
 
 		private ICelestialObject GetClosestCelestialObject()
 		{
-			
-			var t = MyGame.Current.AllCelestialObjects
-				.Where( x => Vector3.DistanceBetween( x.Position, this.Position ) < targetDistance )
-				.FirstOrDefault();
+			ICelestialObject closestPlanet = null;
+			float lowestfloat = float.MaxValue;
+			foreach ( var planet in MyGame.Current.AllCelestialObjects )
+			{
+				var currentfloat = Vector3.DistanceBetween( planet.Position, this.Position );
+				if(Vector3.DistanceBetween(planet.Position, this.Position) < lowestfloat )
+				{
+					lowestfloat = currentfloat;
+					closestPlanet = planet;
+				}
+			}
 
-			if ( t is null )
+			//var t = MyGame.Current.AllCelestialObjects
+			//	.Where( x => Vector3.DistanceBetween( x.Position, this.Position ) < targetDistance )
+			//	.OrderBy( x => Vector3.DistanceBetween( x.Position, this.Position) < targetDistance ).First();
+
+			if ( Vector3.DistanceBetween( closestPlanet.Position, this.Position ) > targetDistance )
 				return null;
 
-			return t;
+			if ( closestPlanet is null )
+				return null;
+
+			return closestPlanet;
 		}
 
 	}
