@@ -11,12 +11,13 @@ namespace ScienceCenter
 
 		public PlanetWalkController()
 		{
-			//targetDistance = 300f;
+
 		}
 
 		public override void Simulate()
 		{
 			base.Simulate();
+
 			//if ( Input.Down( InputButton.Flashlight ))
 			//{
 			//	CelestialObjectOfAttraction = GetClosestCelestialObject();

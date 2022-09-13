@@ -10,5 +10,7 @@ namespace ScienceCenter
 		public bool HasGravity { get; set; }
 
 		public string CelestialName { get; set; }
+
+		public Rotation Rotation { get; set; }
 	}
 }

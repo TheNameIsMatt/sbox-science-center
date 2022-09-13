@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,31 +48,60 @@ namespace ScienceCenter
 		{
 			base.Simulate( cl );
 
-			if ( Input.Down( InputButton.Jump ) && IsServer )
-				Log.Info( MyGame.Current.AllCelestialObjects.FirstOrDefault().Position ); 
+			DebugOverlays();
 
-			if ( Input.Down( InputButton.Flashlight ) && IsServer)
+			if ( Input.Down( InputButton.Jump ) && IsServer )
+			{
+				Log.Info( Rotation.Forward );
+				Velocity += new Vector3( 0, 0, 100 ) + Rotation.Forward * 10f;
+			}
+				
+			
+
+			if ( Input.Down( InputButton.Flashlight ) && IsServer )
 			{
 				CelestialObjectOfAttraction = GetClosestCelestialObject();
 
 				if ( CelestialObjectOfAttraction is not null )
-					Log.Info( CelestialObjectOfAttraction?.CelestialName);
+					Log.Info( CelestialObjectOfAttraction?.CelestialName );
 				else
 					Log.Info( "No Planet Nearby" );
+
+
+
+				Vector3 relativePos = (CelestialObjectOfAttraction.Position + new Vector3(0, .5f, 0)) - Position;
+				Rotation tempRotation = Rotation.LookAt( relativePos );
+				Rotation current = LocalRotation;
+
+				LocalRotation = Rotation.Slerp( current, tempRotation, Time.Delta );
+
+
+			}
+
+		}
+
+		private void DebugOverlays()
+		{
+			DebugOverlay.Axis( Position, Rotation, 100f );
+			foreach (var CelestialBody in MyGame.Current.AllCelestialObjects )
+			{
+				DebugOverlay.Axis( CelestialBody.Position, CelestialBody.Rotation, 100f );
 			}
 		}
 
 		private ICelestialObject GetClosestCelestialObject()
 		{
-			ICelestialObject closestPlanet = null;
+			ICelestialObject closestCelestialObject = null;
 			float lowestfloat = float.MaxValue;
-			foreach ( var planet in MyGame.Current.AllCelestialObjects )
+
+
+			foreach ( var celestialObject in MyGame.Current.AllCelestialObjects )
 			{
-				var currentfloat = Vector3.DistanceBetween( planet.Position, this.Position );
-				if(Vector3.DistanceBetween(planet.Position, this.Position) < lowestfloat )
+				var currentfloat = Vector3.DistanceBetween( celestialObject.Position, this.Position );
+				if ( Vector3.DistanceBetween( celestialObject.Position, this.Position ) < lowestfloat )
 				{
 					lowestfloat = currentfloat;
-					closestPlanet = planet;
+					closestCelestialObject = celestialObject;
 				}
 			}
 
@@ -79,13 +109,13 @@ namespace ScienceCenter
 			//	.Where( x => Vector3.DistanceBetween( x.Position, this.Position ) < targetDistance )
 			//	.OrderBy( x => Vector3.DistanceBetween( x.Position, this.Position) < targetDistance ).First();
 
-			if ( Vector3.DistanceBetween( closestPlanet.Position, this.Position ) > targetDistance )
+			if ( Vector3.DistanceBetween( closestCelestialObject.Position, this.Position ) > targetDistance )
 				return null;
 
-			if ( closestPlanet is null )
+			if ( closestCelestialObject is null )
 				return null;
 
-			return closestPlanet;
+			return closestCelestialObject;
 		}
 
 	}

@@ -7,7 +7,9 @@ namespace ScienceCenter
 	[Library("Planet_Entity"), HammerEntity, Title("Basic Planet"), Description("Basic Planet")]
 	[Category("Planetoids")]
 	[Model]
-	public partial class Planetoid : ModelEntity, ICelestialObject
+	[Solid]
+	
+	public partial class Planetoid : Prop, ICelestialObject
 	{
 		[Property(Title = "Gravitational Pull Range")]
 		public float GravityRange { get; set; }
@@ -20,6 +22,8 @@ namespace ScienceCenter
 
 		[Property(Title = "Position")]
 		public override Vector3 Position { get => base.Position; set => base.Position = value; }
+
+		public override Rotation Rotation { get => base.Rotation; set => base.Rotation = value; }
 
 		protected Output OnTouch { get; set; }
 
