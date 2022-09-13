@@ -2,6 +2,7 @@
 using Sandbox.UI.Construct;
 using ScienceCenter;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,12 +17,19 @@ namespace ScienceCenter;
 /// the game starts, and is replicated to the client. 
 /// 
 /// You can use this to create things like HUDs and declare which player class
-/// to use for spawned players.
+/// to use for spawned players. 
 /// </summary>
 public partial class MyGame : Sandbox.Game
 {
+	public static new MyGame Current { get; private set; }
+	public IReadOnlyList<ICelestialObject> AllCelestialObjects => _allCelestialObjects;
+	internal  List<ICelestialObject> _allCelestialObjects = new();
+
+	//public List<ICelestialObject> SOMETHINGELSEFORNOW { get; private set; }
+
 	public MyGame()
 	{
+		Current = this;
 	}
 
 	/// <summary>
@@ -50,5 +58,20 @@ public partial class MyGame : Sandbox.Game
 		}
 
 		pawn.Respawn();
+	}
+
+	public override void Simulate( Client cl )
+	{
+		base.Simulate( cl );
+	}
+
+	public override void PostLevelLoaded()
+	{
+		foreach ( ICelestialObject o in Entity.All.Where(x => x is ICelestialObject  ))
+		{
+			_allCelestialObjects.Add( o );
+		}
+
+		base.PostLevelLoaded();
 	}
 }

@@ -1,0 +1,14 @@
+E:\_Games\steamapps\common\sbox\.vs\output\science_center.xml
+E:\_Games\steamapps\common\sbox\.vs\output\science_center.deps.json
+E:\_Games\steamapps\common\sbox\.vs\output\science_center.dll
+E:\_Games\steamapps\common\sbox\.vs\output\science_center.pdb
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\science_center.csproj.AssemblyReference.cache
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\science_center.GeneratedMSBuildEditorConfig.editorconfig
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\science_center.AssemblyInfoInputs.cache
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\science_center.AssemblyInfo.cs
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\science_center.csproj.CoreCompileInputs.cache
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\science_center.csproj.CopyComplete
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\science_center.dll
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\refint\science_center.dll
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\science_center.pdb
+E:\_Games\steamapps\common\sbox\addons\sbox-science-center\code\obj\Debug\ref\science_center.dll
