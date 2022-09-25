@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ScienceCenter.Entities.Interfaces;
 
 //
 // You don't need to put things in a namespace, but it doesn't hurt.
@@ -60,9 +61,19 @@ public partial class MyGame : Sandbox.Game
 		pawn.Respawn();
 	}
 
+	[ConCmd.Server( "kill" )]
+	static void KillCommand()
+	{
+		var target = ConsoleSystem.Caller;
+		if ( target == null ) return;
+
+		(Current as Game)?.DoPlayerSuicide( target );
+	}
+
 	public override void Simulate( Client cl )
 	{
 		base.Simulate( cl );
+		//Map.Entity.Position += new Vector3( 0, 1, 1 );
 	}
 
 	public override void PostLevelLoaded()

@@ -1,5 +1,6 @@
 ﻿using SandboxEditor;
 using Sandbox;
+using ScienceCenter.Entities.Interfaces;
 
 namespace ScienceCenter
 {

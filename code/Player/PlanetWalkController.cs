@@ -11,6 +11,7 @@ namespace ScienceCenter
 
 		public PlanetWalkController()
 		{
+			//Gravity = 0f;
 
 		}
 
