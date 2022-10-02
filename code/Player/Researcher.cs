@@ -8,23 +8,40 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using ScienceCenter.Entities.Interfaces;
+using ScienceCenter.Entities.Weapons;
+using ScienceCenter.Player;
 
 namespace ScienceCenter
 {
-	public partial class Researcher : Player
+	public partial class Researcher : Sandbox.Player
 	{
+
+		public ClothingContainer Clothing = new();
 		public float targetDistance { get; set; } = 3000f;
 
-		[Net]
+		
+
+		[Net, Predicted]
 		private ICelestialObject CelestialObjectOfAttraction { get; set; }
 
+
+		//Client Constructor
 		public Researcher()
 		{
+			Inventory = new ResearcherInventory(this);
+		}
+
+		//Networked Constructor.
+		public Researcher( Client cl )
+		{
 			SetupPhysicsFromOBB( PhysicsMotionType.Dynamic, Position, (Position + (Vector3.Up * 2f)) );
+			Clothing.LoadFromClient( cl );
+			
 		}
 
 		public override void Respawn()
 		{
+
 			SetModel( "models/citizen/citizen.vmdl" );
 			//SetModel( "models/ttt_newradio/radioterror.vmdl" );
 
@@ -40,6 +57,8 @@ namespace ScienceCenter
 			{
 				DevController = null;
 			}
+
+			Clothing.DressEntity( this );
 
 			EnableAllCollisions = true;
 			EnableDrawing = true;
@@ -60,39 +79,36 @@ namespace ScienceCenter
 
 			DebugOverlays();
 
-			if (  IsServer )
+			if ( IsServer )
 			{
-				RotateTowardCelestialObject();
+				//RotateTowardCelestialObject();
 
 			}
-				
-			if ( Input.Down( InputButton.Flashlight )  )
+
+			if ( Input.Down( InputButton.Reload ) )
 			{
 				if ( IsServer )
-				SpawnNoseBoneFollower();
-				
-				//Map.Entity.Position = CelestialObjectOfAttraction.Position; Get Map Entity
-
-
-				//CelestialObjectOfAttraction = GetClosestCelestialObject();
-
-				//if ( CelestialObjectOfAttraction is not null )
-				//	Log.Info( CelestialObjectOfAttraction?.CelestialName );
-				//else
-				//	Log.Info( "No Planet Nearby" );
-
-
-				//Removing my Position variable from where I need to look ensures that my forward axis looks directly at the object it needs to.
-				//Vector3 relativePos = (CelestialObjectOfAttraction.Position - Position);
-				//Rotation tempRotation = Rotation.LookAt( relativePos.Normal, Rotation.Up ) ;
-
-
-				//Rotation = tempRotation;
-				//Rotation = Rotation.RotateAroundAxis( relativePos, (Time.Delta * 10) );
-				//Rotation = tempRotation;
-					//Rotation.Slerp( current, tempRotation, Time.Delta );
+					SpawnMechaSword();
 			}
 
+			if ( Input.Down( InputButton.Flashlight ) )
+			{
+				if ( IsServer )
+					SpawnNoseBoneFollower();
+
+
+				//Map.Entity.Position = CelestialObjectOfAttraction.Position; Get Map Entity
+
+			}
+
+		}
+
+		private void SpawnMechaSword()
+		{
+			RainbowMechaSword rms = new RainbowMechaSword();
+			rms.Spawn();
+			rms.SetParent( this, true ); // ENSURE TO SET BOOL TO TRUE TO BONEMERGE
+			Position = this.Position;
 		}
 
 		private void SpawnNoseBoneFollower()
@@ -108,19 +124,11 @@ namespace ScienceCenter
 		{
 			CelestialObjectOfAttraction = GetClosestCelestialObject();
 			Vector3 relativePos = (CelestialObjectOfAttraction.Position - Position).Normal;
-			
+
 			Rotation normalRotation = Rotation.LookAt( relativePos, Vector3.Up ); //, Vector3.Up //Returns Direction Vector
 			Rotation = normalRotation.RotateAroundAxis( Vector3.Right, 90f ); //Rotate the forward 90 degrees using the left hand method
 			Velocity += relativePos * 20f; //Timesing the direction vector by a force of magnitude.
-			
 
-			//float AngleFromFeetToPlanet = Vector3.GetAngle( Rotation.Down, relativePos );
-			//float tempCurrentRotation = Rotation.Angle();
-
-			//Rotation = Rotation.RotateAroundAxis( relativePos, 90f );
-			//Rotation = Rotation.LookAt( relativePos );
-			//	Log.Info( Rotation.Forward );
-			//	Velocity += new Vector3( 0, 0, 10 ) + Rotation.Forward * 1f;
 		}
 
 		private ICelestialObject GetClosestCelestialObject()
@@ -139,10 +147,6 @@ namespace ScienceCenter
 				}
 			}
 
-			//var t = MyGame.Current.AllCelestialObjects
-			//	.Where( x => Vector3.DistanceBetween( x.Position, this.Position ) < targetDistance )
-			//	.OrderBy( x => Vector3.DistanceBetween( x.Position, this.Position) < targetDistance ).First();
-
 			if ( Vector3.DistanceBetween( closestCelestialObject.Position, this.Position ) > targetDistance )
 				return null;
 
@@ -151,14 +155,23 @@ namespace ScienceCenter
 
 			return closestCelestialObject;
 		}
+
+
 		private void DebugOverlays()
 		{
+
 			DebugOverlay.Axis( Position, Rotation, 100f );
+			DebugOverlay.Text( Controller.WishVelocity.ToString(), Position );
+
+
 			foreach ( var CelestialBody in MyGame.Current.AllCelestialObjects )
 			{
 				DebugOverlay.Axis( CelestialBody.Position, CelestialBody.Rotation, 100f );
+
 			}
 		}
+
+
 	}
 
 }

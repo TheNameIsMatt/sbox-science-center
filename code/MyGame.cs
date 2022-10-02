@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ScienceCenter.Entities.Interfaces;
+using ScienceCenter.Entities.NPCs;
 
 //
 // You don't need to put things in a namespace, but it doesn't hurt.
@@ -41,7 +42,7 @@ public partial class MyGame : Sandbox.Game
 		base.ClientJoined( client );
 
 		// Create a pawn for this client to play with
-		var pawn = new Researcher();
+		var pawn = new Researcher(client);
 		client.Pawn = pawn;
 
 		// Get all of the spawnpoints
@@ -61,9 +62,11 @@ public partial class MyGame : Sandbox.Game
 		pawn.Respawn();
 	}
 
+
 	[ConCmd.Server( "kill" )]
 	static void KillCommand()
 	{
+		Log.Info( "Hello I am kill" );
 		var target = ConsoleSystem.Caller;
 		if ( target == null ) return;
 
