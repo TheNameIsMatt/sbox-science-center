@@ -24,6 +24,7 @@ namespace ScienceCenter;
 public partial class MyGame : Sandbox.Game
 {
 	public static new MyGame Current { get; private set; }
+
 	public IReadOnlyList<ICelestialObject> AllCelestialObjects => _allCelestialObjects;
 	internal  List<ICelestialObject> _allCelestialObjects = new();
 

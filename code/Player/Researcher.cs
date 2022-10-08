@@ -43,13 +43,11 @@ namespace ScienceCenter
 		{
 
 			SetModel( "models/citizen/citizen.vmdl" );
-			//SetModel( "models/ttt_newradio/radioterror.vmdl" );
 
-			//Because it inherits these controllers and animators you can just call Controller rather than this.controller
 			//Controller = new PlanetWalkController();
 			Controller = new WalkController();
 
-			CameraMode = new ThirdPersonCamera();
+			CameraMode = new SideviewCamera();
 
 			Animator = new StandardPlayerAnimator();
 
@@ -70,6 +68,7 @@ namespace ScienceCenter
 
 		public override void FrameSimulate( Client cl )
 		{
+			//RotateTowardCelestialObject();
 			base.FrameSimulate( cl );
 
 		}
@@ -120,6 +119,7 @@ namespace ScienceCenter
 			nosebone.Position = Position + (Vector3.Up * 50f); // Directional/Unit Vector * Magnitude.
 		}
 
+		
 		private void RotateTowardCelestialObject()
 		{
 			CelestialObjectOfAttraction = GetClosestCelestialObject();
@@ -131,6 +131,7 @@ namespace ScienceCenter
 
 		}
 
+		
 		private ICelestialObject GetClosestCelestialObject()
 		{
 			ICelestialObject closestCelestialObject = null;
