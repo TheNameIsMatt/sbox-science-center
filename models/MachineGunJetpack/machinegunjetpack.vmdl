@@ -44,7 +44,7 @@
 				[
 					{
 						_class = "RenderMeshFile"
-						filename = "models/MachineGunJetpack/RiggedMachineGunJetpack.fbx"
+						filename = "models/MachineGunJetpack/RiggedMachineGunJetpackv2newaxis.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0
@@ -78,11 +78,11 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/MachineGunJetpack/RiggedMachineGunJetpack.fbx"
+						source_filename = "models/MachineGunJetpack/RiggedMachineGunJetpackv2newaxis.fbx"
 						start_frame = -1
 						end_frame = -1
 						framerate = -1.0
-						take = 1
+						take = 3
 						reverse = false
 					},
 					{
@@ -99,7 +99,7 @@
 						hidden = false
 						anim_markup_ordered = false
 						disable_compression = false
-						source_filename = "models/MachineGunJetpack/RiggedMachineGunJetpack.fbx"
+						source_filename = "models/MachineGunJetpack/RiggedMachineGunJetpackv2newaxis.fbx"
 						start_frame = -1
 						end_frame = -1
 						framerate = 60.0

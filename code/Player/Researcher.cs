@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ScienceCenter.Entities.Interfaces;
 using ScienceCenter.Entities.Weapons;
 using ScienceCenter.Player;
+using ScienceCenter.Entities.Jetpack;
 
 namespace ScienceCenter
 {
@@ -18,6 +19,9 @@ namespace ScienceCenter
 
 		public ClothingContainer Clothing = new();
 		public float targetDistance { get; set; } = 3000f;
+
+		[Net,Predicted]
+		public BaseJetpack jetpack { get; set; }
 
 		
 
@@ -45,8 +49,9 @@ namespace ScienceCenter
 			SetModel( "models/citizen/citizen.vmdl" );
 
 			//Controller = new PlanetWalkController();
-			Controller = new WalkController();
+			Controller = new JetpackController();
 
+			//CameraMode = new ThirdPersonCamera();
 			CameraMode = new SideviewCamera();
 
 			Animator = new StandardPlayerAnimator();
@@ -63,6 +68,16 @@ namespace ScienceCenter
 			EnableHideInFirstPerson = true;
 			EnableShadowInFirstPerson = true;
 
+			if ( IsServer )
+			{
+				if (jetpack is null)
+					jetpack = new BaseJetpack();
+
+				jetpack.SetParent( this, true );
+				
+			}
+			
+
 			base.Respawn();
 		}
 
@@ -76,12 +91,13 @@ namespace ScienceCenter
 		{
 			base.Simulate( cl );
 
-			DebugOverlays();
+			jetpack.Simulate( cl );
+
+			//DebugOverlays();
 
 			if ( IsServer )
 			{
 				//RotateTowardCelestialObject();
-
 			}
 
 			if ( Input.Down( InputButton.Reload ) )
@@ -94,10 +110,6 @@ namespace ScienceCenter
 			{
 				if ( IsServer )
 					SpawnNoseBoneFollower();
-
-
-				//Map.Entity.Position = CelestialObjectOfAttraction.Position; Get Map Entity
-
 			}
 
 		}

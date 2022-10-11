@@ -9,7 +9,7 @@ namespace ScienceCenter.Player
 {
 	public partial class SideviewCamera : CameraMode
 	{
-		public float CameraDistance { get; set; } = 200f;
+		public float CameraDistance { get; set; } = 300f;
 		public override void Activated()
 		{
 			base.Activated();
