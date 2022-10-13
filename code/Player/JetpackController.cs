@@ -25,12 +25,11 @@ namespace ScienceCenter.Player
 			if ( Input.Down( InputButton.Jump ) )
 			{
 				
+				
 				if (Host.IsClient) Sound.FromEntity( "sounds/shortgatling.sound", Local.Pawn );
 
 				if ( Host.IsServer )
 				{
-
-				
 
 				WishVelocity = Velocity + (Vector3.Up * 20f);
 				Velocity = WishVelocity + (Vector3.Up * 20f);

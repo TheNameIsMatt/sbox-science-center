@@ -72,7 +72,6 @@ namespace ScienceCenter
 			{
 				if (jetpack is null)
 					jetpack = new BaseJetpack();
-
 				jetpack.SetParent( this, true );
 				
 			}
@@ -92,6 +91,8 @@ namespace ScienceCenter
 			base.Simulate( cl );
 
 			jetpack.Simulate( cl );
+
+			if(IsClient) jetpack.FrameSimulate( cl );
 
 			//DebugOverlays();
 
