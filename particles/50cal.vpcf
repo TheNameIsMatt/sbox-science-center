@@ -62,7 +62,7 @@
 	m_Initializers = 
 	[
 		{
-			_class = "C_INIT_SequenceLifeTime"
+			_class = "C_INIT_CreateWithinSphere"
 		},
 	]
 	m_Operators = 
