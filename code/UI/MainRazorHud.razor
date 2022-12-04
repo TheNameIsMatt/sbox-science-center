@@ -1,5 +1,9 @@
 ﻿@using Sandbox.UI
 @using Sandbox
+@using ScienceCenter.Entities
+@using ScienceCenter
+@using ScienceCenter.Entities.Interfaces
+@using ScienceCenter.UI
 
 @namespace ScienceCenter.UI
 
@@ -8,6 +12,47 @@
 @attribute [StyleSheet("/UI/stylesheet.scss")]
 
 <style>
+    .rectangular-div {
+        display: flex;
+        align-items: center;
+        width: 150px;
+        height: 30px;
+        background-color: #ccc;
+        border: 1px solid #666;
+        padding: 0 10px;
+        border-radius: 10px;
+        margin: 30px;
+    }
+        .celestialobjectlist{
+        flex-direction: column;
+        font-size: 25px;
+        font-weight: 800;
+        font-family: Poppins;
+        color: white;
+        text-shadow: 1px 1px 2px black;
+        padding: 20px;
+        width: 500px;
+    }
+
+    .celestialobjectlist .row{
+        flex-grow: 1;
+        padding: 10px;
+        background-color: rgba(orange .55);
+        border-bottom: 2px solid black;
+        margin-bottom: 8px;
+        border-radius: 4px;
+    }
+
+    .icon {
+        font-size: 20px;
+        color: #333;
+    }
+
+    .value {
+        font-size: 16px;
+        color: #333;
+        margin-left: auto;
+    }
 
     .words{
         margin: 100px;
@@ -19,16 +64,38 @@
 </style>
 
 <root>
+    <panel class="rectangular-div">
+        <img class="icon" src="" />
+        <h1 class="value">100</h1>
+    </panel>
     <panel class="words">
         Hello, Razor. The value of SomeNumber is: @SomeNumber
+    </panel>
+    <panel class="celestialobjectlist">
+        @foreach(var planet in GetPlayerNames())
+        {
+            <GamePlanets Name=@planet> </GamePlanets>
+        }
     </panel>
 </root>
 
 @code{
     private int SomeNumber = 32;
 
-    private void SomeFunction(){
+    private List<ICelestialObject> GetAllCelestialObjects(){
         
+        return MyGame.Current.AllCelestialObjects.ToList();
     }
 
+
+    private List<string> GetPlayerNames()
+    {
+        return new List<string>()
+        {
+            "Alyssa",
+            "George",
+            "Jack",
+            "Billy"
+        };
+    }
 }
